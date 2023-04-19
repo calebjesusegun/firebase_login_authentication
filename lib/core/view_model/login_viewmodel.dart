@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final auth = FirebaseAuth.instance;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   bool isLoggedIn() {
     return auth.currentUser != null;
@@ -16,21 +18,26 @@ class LoginViewModel extends ChangeNotifier {
     return auth.currentUser!.email!;
   }
 
+  void isUserLoggingIn(bool val) {
+    _isLoading = val;
+    notifyListeners();
+  }
+
   Future<String?> login(String email, String password) async {
     try {
+      isUserLoggingIn(true);
       await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      isUserLoggingIn(false);
       notifyListeners();
       return null;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        // log('The password is too weak');
-      }
+      isUserLoggingIn(false);
       return e.message;
     } catch (e) {
-      // log(e.toString());
+      isUserLoggingIn(false);
       return e.toString();
     }
   }

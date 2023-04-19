@@ -28,23 +28,18 @@ class NetworkServiceRepositoryImpl extends NetworkServiceRepository {
       required String subDomain,
       Map<String, String>? queryParameter,
       Map<String, String>? header}) async {
-    debugPrint('A GET call initiated');
     var url = Uri.https(domain, '$subDomain/', queryParameter);
-    debugPrint('Header: $header');
-    debugPrint('Request URL: $url');
 
     var response = await client.get(url, headers: header);
 
     if (response.statusCode == 200) {
-      debugPrint('GET call Successful!');
       String data = response.body;
       var decodedData = jsonDecode(data);
-      debugPrint('Raw GET Response => $data');
-      debugPrint('Decoded GET Response => $decodedData');
+
       return decodedData;
     } else {
       debugPrint('Request failed with status: ${response.statusCode}.');
-      //TODO: Make sure you implement redirect to error 404 page
+      //TODO: Implement redirect to error 404 page
     }
   }
 
@@ -57,24 +52,19 @@ class NetworkServiceRepositoryImpl extends NetworkServiceRepository {
       required bool isJson,
       Map<String, String>? queryParameter,
       Map<String, String>? header}) async {
-    debugPrint('A POST call initiated');
     var url = Uri.https(domain, subDomain, queryParameter);
-    debugPrint('Header: $header');
-    debugPrint('Request URL: $url');
-    debugPrint('Payload: $body');
+
     var response = await client.post(url,
         headers: header, body: isJson ? jsonEncode(body) : body);
 
     if (response.statusCode == 200) {
-      debugPrint('POST call Successful!');
       String data = response.body;
       var decodedData = jsonDecode(data);
-      debugPrint('Raw POST Response => $data');
-      debugPrint('Decoded POST Response => $decodedData');
+
       return decodedData;
     } else {
       debugPrint('Request failed with status: ${response.statusCode}.');
-      //TODO: Make sure you implement redirect to error 404 page
+      //TODO: Implement redirect to error 404 page
     }
   }
 }
