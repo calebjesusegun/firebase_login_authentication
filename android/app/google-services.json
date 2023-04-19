@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "690376321571",
+    "project_id": "fir-login-auth-b2ba2",
+    "storage_bucket": "fir-login-auth-b2ba2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690376321571:android:ca7ca0e851f7d577dc1f96",
+        "android_client_info": {
+          "package_name": "com.example.firebase_login_authentication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "690376321571-h22hbkgnu13vmp7ksqe0bnep41tk351i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD56b15EJQWdYoku2hrOjIBt9_38UqjMsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "690376321571-h22hbkgnu13vmp7ksqe0bnep41tk351i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
