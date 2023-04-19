@@ -1,7 +1,8 @@
+import 'package:firebase_login_authentication/features/home/home_view.dart';
+import 'package:firebase_login_authentication/features/login/widget/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import '../../core/view_model/login_viewmodel.dart';
 
 class LoginView extends StatefulWidget {
@@ -14,8 +15,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _rememberMe = false;
   bool isPasswordVisible = false;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void dispose() {
@@ -27,7 +28,6 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<LoginViewModel>();
-    // final userDao = Provider.of<UserDao>(context, listen: false);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -41,8 +41,9 @@ class _LoginViewState extends State<LoginView> {
                 Text(
                   "Welcome back!",
                   style: GoogleFonts.fasthand(
-                    fontSize: 48,
+                    fontSize: 32,
                     fontWeight: FontWeight.w700,
+                    color: Colors.deepOrangeAccent,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -52,13 +53,15 @@ class _LoginViewState extends State<LoginView> {
                     const Text(
                       'Email',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Color(0xff2a2a2a),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    TextFormField(
-                      controller: _emailController,
+                    CustomTextField(
+                      emailController: _emailController,
+                      hintText: "Enter your email",
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
@@ -66,83 +69,45 @@ class _LoginViewState extends State<LoginView> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        hintText: "Enter your email",
-                        border: OutlineInputBorder(),
-                        suffixIcon: Icon(Icons.email_rounded),
-                      ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
                     const Text(
                       'Password',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Color(0xff2a2a2a),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    SizedBox(
-                      //height: 50,
-                      child: TextFormField(
-                        controller: _passwordController,
-                        autofocus: false,
-                        obscureText: isPasswordVisible,
-                        keyboardType: TextInputType.visiblePassword,
-                        autocorrect: false,
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Password field cannot be empty';
-                          }
-                          return null;
+                    CustomTextField(
+                      emailController: _passwordController,
+                      hintText: "Enter your password",
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password field cannot be empty';
+                        }
+                        return null;
+                      },
+                      isPasswordVisible: isPasswordVisible,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
                         },
-                        decoration: InputDecoration(
-                          hintText: "........",
-                          border: const OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                isPasswordVisible = !isPasswordVisible;
-                              });
-                            },
-                            icon: Icon(isPasswordVisible
-                                ? Icons.visibility_rounded
-                                : Icons.visibility_off_rounded),
-                          ),
+                        icon: Icon(
+                          isPasswordVisible
+                              ? Icons.visibility_rounded
+                              : Icons.visibility_off_rounded,
+                          color: Colors.black54,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Checkbox(
-                          activeColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          value: _rememberMe,
-                          onChanged: (newValue) {
-                            setState(() {
-                              _rememberMe = newValue!;
-                            });
-                          },
-                        ),
-                        const Text(
-                          "Remember me",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
                 SizedBox(
                   height: 50,
                   width: double.infinity,
@@ -165,13 +130,38 @@ class _LoginViewState extends State<LoginView> {
                               ),
                             ),
                           );
+                        } else if (viewModel.isLoggedIn()) {
+                          if (!mounted) return;
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const HomeView();
+                              },
+                            ),
+                          );
                         }
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                      padding: const MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 6),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.deepOrangeAccent,
+                      ),
                     ),
-                    child: const Text("Sign In"),
+                    child: viewModel.isLoading
+                        ? const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 2),
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 3.0,
+                            ),
+                          )
+                        : const Text(
+                            "Sign In",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                   ),
                 ),
               ],
