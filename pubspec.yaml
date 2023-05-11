@@ -23,8 +23,6 @@ dependencies:
   firebase_core: ^2.10.0
   firebase_auth: ^4.4.2
   flutter_svg: ^2.0.5
-  firebase_messaging: ^14.5.0
-  flutter_local_notifications: ^14.0.0+1
 
 dev_dependencies:
   flutter_test:
