@@ -1,3 +1,5 @@
+import 'package:firebase_login_authentication/core/navigation/navigation.dart';
+import 'package:firebase_login_authentication/core/navigation/route.dart';
 import 'package:firebase_login_authentication/features/home/home_view.dart';
 import 'package:firebase_login_authentication/features/login/widget/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -132,13 +134,7 @@ class _LoginViewState extends State<LoginView> {
                           );
                         } else if (viewModel.isLoggedIn()) {
                           if (!mounted) return;
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const HomeView();
-                              },
-                            ),
-                          );
+                          AppNavigator.pushNamedReplacement(homeRoute);
                         }
                       }
                     },
