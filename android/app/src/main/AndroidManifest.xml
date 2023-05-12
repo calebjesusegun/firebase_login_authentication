@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.firebase_login_authentication">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="FCM App"
         android:name="${applicationName}"
