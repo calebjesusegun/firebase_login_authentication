@@ -35,7 +35,7 @@ class PushNotificationService {
     // Enable Background Notification to retrieve any message that caused the application to open from a terminated state
     RemoteMessage? initialMessage = await _fcm.getInitialMessage();
 
-    // This function routes to a screen named home if the data property received has a type of home
+    // This function routes to home view if the data property received has a type of home
     void handleMessage(RemoteMessage message) {
       if (message.data['type'] == 'home') {
         AppNavigator.pushNamedReplacement(homeRoute);
@@ -97,7 +97,6 @@ class PushNotificationService {
         ?.createNotificationChannel(channel);
 
     //This is used to display the foreground notification
-
     if (message.notification != null) {
       RemoteNotification? notification = message.notification;
 
@@ -107,7 +106,6 @@ class PushNotificationService {
         channel.name,
         importance: Importance.max,
         playSound: true,
-        icon: 'launch_background',
         channelDescription: channel.description,
         priority: Priority.high,
         ongoing: true,

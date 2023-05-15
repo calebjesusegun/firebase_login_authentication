@@ -1,3 +1,4 @@
+import 'package:firebase_login_authentication/core/services/fcm_service.dart';
 import 'package:firebase_login_authentication/core/services/network_service.dart';
 import 'package:firebase_login_authentication/core/services/push_notification_service.dart';
 import 'package:get_it/get_it.dart';
@@ -10,4 +11,5 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<NetworkServiceRepository>(
       () => NetworkServiceRepositoryImpl());
   locator.registerLazySingleton(() => PushNotificationService());
+  locator.registerLazySingleton(() => FcmService());
 }

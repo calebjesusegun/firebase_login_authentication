@@ -133,7 +133,7 @@ class _LoginViewState extends State<LoginView> {
                           );
                         } else if (viewModel.isLoggedIn()) {
                           if (!mounted) return;
-                          AppNavigator.pushNamedReplacement(homeRoute);
+                          await viewModel.sendPushNotification();
                         }
                       }
                     },

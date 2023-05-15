@@ -1,7 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_login_authentication/core/navigation/navigation.dart';
 import 'package:flutter/material.dart';
+import '../app/app_locator.dart';
+import '../model/push_notification_model.dart';
+import '../navigation/route.dart';
+import '../services/fcm_service.dart';
 
 class LoginViewModel extends ChangeNotifier {
+  final _fcmService = locator<FcmService>();
   final auth = FirebaseAuth.instance;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -30,7 +36,6 @@ class LoginViewModel extends ChangeNotifier {
         email: email,
         password: password,
       );
-      isUserLoggingIn(false);
       notifyListeners();
       return null;
     } on FirebaseAuthException catch (e) {
@@ -45,5 +50,20 @@ class LoginViewModel extends ChangeNotifier {
   void logout() async {
     await auth.signOut();
     notifyListeners();
+  }
+
+  Future sendPushNotification() async {
+    try {
+      var data = await _fcmService.sendPushNotification();
+      isUserLoggingIn(false);
+      notifyListeners();
+      PushNotificationModel pushNotificationModel =
+          PushNotificationModel.fromJson(data);
+      if (pushNotificationModel.success == 1) {
+        return data;
+      }
+    } catch (e) {
+      AppNavigator.pushNamedReplacement(homeRoute);
+    }
   }
 }
