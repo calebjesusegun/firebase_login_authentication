@@ -1,5 +1,3 @@
-import 'package:firebase_login_authentication/core/navigation/navigation.dart';
-import 'package:firebase_login_authentication/core/navigation/route.dart';
 import 'package:firebase_login_authentication/features/login/widget/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
